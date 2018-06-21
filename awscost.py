@@ -7,6 +7,15 @@ import urllib
 import boto3
 import requests
 
+# following environment variables are needed:
+# - AWS_ACCESS_KEY_ID
+# - AWS_SECRET_ACCESS_KEY
+# - ZULIP_BOT_EMAIL
+# - ZULIP_BOT_TOKEN
+# - ZULIP_URL
+#
+# The AWS user needs permissions for Cost Explorer
+
 ZULIP_URL = urllib.parse.urljoin(os.environ["ZULIP_URL"], "api/v1/messages")
 ZULIP_BOT_EMAIL = os.environ["ZULIP_BOT_EMAIL"]
 ZULIP_BOT_TOKEN = os.environ["ZULIP_BOT_TOKEN"]
