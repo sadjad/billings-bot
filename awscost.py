@@ -51,7 +51,7 @@ total = sum([x[0] for x in spendings])
 
 spendings.sort(key=lambda x: x[0], reverse=True)
 
-message = """On **{date}**, you spent **${total:.2f}** on Amazon AWS. Here's the breakdown:\n\n""".format(
+message = """On **{date}**, you spent **${total:.2f}** on AWS. Here's the breakdown:\n\n""".format(
     date=start_date.strftime("%B %d, %Y"),
     total=total)
 
