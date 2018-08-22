@@ -1,1 +1,1 @@
-# aws-cost-bot
+# cost-bot
