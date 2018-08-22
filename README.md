@@ -1,1 +1,1 @@
-# cost-bot
+# billings-bot
