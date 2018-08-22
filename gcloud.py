@@ -9,6 +9,8 @@ import requests
 import json
 import pprint
 
+from common import *
+
 from google.cloud import storage
 from google.oauth2 import service_account
 
