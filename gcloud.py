@@ -50,7 +50,7 @@ for project in projects:
     breakdown = bill[project]
     project_total = [0.0, 0.0]
 
-    message += "**{project}**\n\n".format(project=project)
+    message += "**⬡ {project}**\n\n".format(project=project)
     message += "Service | Cost | Credits\n"
     message += "---|---|---\n"
 
@@ -65,14 +65,17 @@ for project in projects:
 
     message += "**Total** | **${cost:.2f}** | **{sign}{credits:.2f}**\n".format(cost=project_total[0], credits=abs(project_total[1]), sign='$' if project_total[1] >= 0 else '-$')
 
-    message += "\n"
+    message += "\n$$~$$\n"
 
-data = [
-    ('type', 'stream'),
-    ('to', 'auto'),
-    ('subject', 'bills'),
-    ('content', message)
-]
+message = message.strip()
+print(message)
 
-response = requests.post(ZULIP_URL, data=data,
-                         auth=(ZULIP_BOT_EMAIL, ZULIP_BOT_TOKEN))
+# data = [
+#     ('type', 'stream'),
+#     ('to', 'auto'),
+#     ('subject', 'bills'),
+#     ('content', message)
+# ]
+#
+# response = requests.post(ZULIP_URL, data=data,
+#                          auth=(ZULIP_BOT_EMAIL, ZULIP_BOT_TOKEN))
