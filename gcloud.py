@@ -69,15 +69,12 @@ for project in projects:
 
     message += "\n$$~$$\n"
 
-message = message.strip()
-print(message)
+data = [
+    ('type', 'stream'),
+    ('to', 'auto'),
+    ('subject', 'gcloud-bills'),
+    ('content', message)
+]
 
-# data = [
-#     ('type', 'stream'),
-#     ('to', 'auto'),
-#     ('subject', 'bills'),
-#     ('content', message)
-# ]
-#
-# response = requests.post(ZULIP_URL, data=data,
-#                          auth=(ZULIP_BOT_EMAIL, ZULIP_BOT_TOKEN))
+response = requests.post(ZULIP_URL, data=data,
+                         auth=(ZULIP_BOT_EMAIL, ZULIP_BOT_TOKEN))

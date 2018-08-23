@@ -67,7 +67,7 @@ message += "**Total** | **${amount:.2f}**".format(amount=total)
 data = [
     ('type', 'stream'),
     ('to', 'auto'),
-    ('subject', 'bills'),
+    ('subject', 'aws-bills'),
     ('content', message)
 ]
 
