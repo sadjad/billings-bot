@@ -21,7 +21,7 @@ client = storage.Client(project=account_info['project_id'], credentials=credenti
 
 bucket = client.get_bucket('stanfordsnr-billing')
 date = datetime.datetime.now().date() + datetime.timedelta(days=-1)
-object_name = 'stanfordsnr-bill-%s.json' % date.isoformat()
+object_name = 'bill-%s.json' % date.isoformat()
 
 blob = bucket.get_blob(object_name)
 
