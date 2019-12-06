@@ -32,19 +32,22 @@ raw_bill = json.loads(blob.download_as_string())
 
 bill = {} # project -> [billing data]
 total = 0.0
+total_credits = 0.0
 
 for item in raw_bill:
     cost = float(item['cost']['amount'])
     credits = sum([float(x['amount']) for x in item.get('credits', []) if x is not None])
     total += cost
+    total_credits += credits
 
     bill[item['projectName']] = bill.get(item['projectName'], []) \
                               + [(":".join(item['lineItemId'].split("/")[2:]),
                                   cost, credits)]
 
-message = "On **{date}**, you spent **${total:.2f}** on Google Cloud. Here's the breakdown:\n\n".format(
+message = "On **{date}**, you spent **${total:.2f}** on Google Cloud (**${total_credits:.2f}** out of your credits). Here's the breakdown:\n\n".format(
     date=date.strftime("%B %d, %Y"),
-    total=total)
+    total=total,
+    total_credits=abs(total_credits))
 
 projects = sorted(bill.keys())
 
