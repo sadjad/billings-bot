@@ -26,7 +26,12 @@ BREAKDOWN_COUNT = 10
 def normalize(name):
     return name.replace("Amazon Elastic Compute Cloud", "Amazon EC2") \
                .replace("Amazon Simple Storage Service", "Amazon S3" ) \
-               .replace("Amazon Relational Database Service", "Amazon RDS")
+               .replace("Amazon Relational Database Service", "Amazon RDS") \
+               .replace("Amazon Elastic Container Service for Kubernetes", "Amazon ECS") \
+               .replace("Amazon EC2 Container Registry (ECR)", "Amazon ECR") \
+               .replace("- Other", "(Other)") \
+               .replace("- Compute", "(Compute)")
+
 
 client = boto3.client('ce')
 cost_and_usage = client.get_cost_and_usage(
@@ -73,3 +78,58 @@ data = [
 
 response = requests.post(ZULIP_URL, data=data,
                          auth=(ZULIP_BOT_EMAIL, ZULIP_BOT_TOKEN))
+
+cost_blocks = {
+    "type": "section",
+    "fields": []
+}
+
+other = total
+
+for s in spendings[:BREAKDOWN_COUNT]:
+    if s[0] < 1.00:
+        continue
+
+    cost_blocks['fields'] += [{
+        'type': 'mrkdwn',
+        'text': f'*{s[1]}:* ${s[0]:.2f}'
+    }]
+
+    other -= s[0]
+
+if other > 0.001:
+    cost_blocks['fields'] += [{
+        'type': 'mrkdwn',
+        'text': f'*Other:* ${other:.2f}'
+    }]
+
+slack_message = {
+    "blocks": [
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": f"Yesterday, you spent *${total:.2f}* on AWS. Here's the breakdown:"
+            }
+        },
+        {
+            "type": "divider"
+        },
+        cost_blocks,
+        {
+            "type": "context",
+            "elements": [
+                {
+                    "type": "mrkdwn",
+                    "text": "{start}".format(start=start_date.strftime("%b %d, %Y"))
+                }
+            ]
+        },
+        {
+            "type": "divider"
+        }
+    ]
+}
+
+response = requests.post(SLACK_URL, json=slack_message)
+print(response)
